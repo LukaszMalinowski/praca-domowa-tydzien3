@@ -20,8 +20,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getAllCars() {
-        return repository.getAllCars();
+    public List<Car> getCars() {
+        return repository.getCars();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> getCarsByColor(String color) {
-        return repository.getCarsByColor(Color.getColor(color));
+        return repository.getCarsByColor(color);
     }
 
     @Override

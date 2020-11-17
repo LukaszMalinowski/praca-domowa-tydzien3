@@ -2,13 +2,12 @@ package pl.lukaszmalina.tydzien3.service;
 
 import pl.lukaszmalina.tydzien3.entity.Car;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
 public interface CarService {
 
-    List<Car> getAllCars();
+    List<Car> getCars();
 
     Optional<Car> getCarById(long id);
 

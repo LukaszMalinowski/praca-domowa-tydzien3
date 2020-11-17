@@ -18,7 +18,7 @@ public class CarRepository {
         this.carList = new ArrayList<>();
     }
 
-    public List<Car> getAllCars() {
+    public List<Car> getCars() {
         return carList;
     }
 
@@ -26,7 +26,7 @@ public class CarRepository {
         return carList.stream().filter(car -> car.getId() == id).findFirst();
     }
 
-    public List<Car> getCarsByColor(Color color) {
+    public List<Car> getCarsByColor(String color) {
         return carList.stream().filter(car -> car.getColor().equals(color)).collect(Collectors.toList());
     }
 
