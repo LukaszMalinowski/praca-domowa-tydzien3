@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class CarRepository{
+public class CarRepository {
 
     private List<Car> carList;
 
@@ -30,8 +30,8 @@ public class CarRepository{
         return carList.stream().filter(car -> car.getColor().equals(color)).collect(Collectors.toList());
     }
 
-    public void addCar(Car car) {
-        carList.add(car);
+    public boolean addCar(Car car) {
+        return carList.add(car);
     }
 
     public boolean editCar(Car newCar) {
