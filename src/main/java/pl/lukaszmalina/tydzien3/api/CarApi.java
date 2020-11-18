@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping(value = "/cars",
+                produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 public class CarApi {
 
     CarService service;
@@ -32,7 +34,6 @@ public class CarApi {
 
     @GetMapping("/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable long id) {
-        System.out.println(id);
         Optional<Car> car = service.getCarById(id);
 
         if(car.isPresent())
@@ -43,7 +44,6 @@ public class CarApi {
 
     @GetMapping("/color/{color}")
     public ResponseEntity<List<Car>> getCarsByColor(@PathVariable String color) {
-        System.out.println(color);
         List<Car> cars = service.getCarsByColor(color);
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
