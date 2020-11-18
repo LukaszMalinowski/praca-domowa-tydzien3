@@ -3,7 +3,6 @@ package pl.lukaszmalina.tydzien3.repository;
 import org.springframework.stereotype.Repository;
 import pl.lukaszmalina.tydzien3.entity.Car;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,11 +33,11 @@ public class CarRepository {
         return carList.add(car);
     }
 
-    public boolean editCar(Car newCar) {
-        Optional<Car> optionalCar = carList.stream().filter(oldCar -> oldCar.getId() == newCar.getId()).findFirst();
+    public boolean updateCar(Car newCar) {
+        Optional<Car> carOptional = carList.stream().filter(oldCar -> oldCar.getId() == newCar.getId()).findFirst();
 
-        if (optionalCar.isPresent()) {
-            carList.remove(optionalCar.get());
+        if (carOptional.isPresent()) {
+            carList.remove(carOptional.get());
             carList.add(newCar);
             return true;
         }
@@ -47,10 +46,10 @@ public class CarRepository {
     }
 
     public boolean removeCarById(long id) {
-        Optional<Car> optionalCar = carList.stream().filter(oldCar -> oldCar.getId() == id).findFirst();
+        Optional<Car> carOptional = carList.stream().filter(oldCar -> oldCar.getId() == id).findFirst();
 
-        if(optionalCar.isPresent()) {
-            carList.remove(optionalCar.get());
+        if(carOptional.isPresent()) {
+            carList.remove(carOptional.get());
             return true;
         }
 

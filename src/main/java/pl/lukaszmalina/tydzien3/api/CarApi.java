@@ -54,7 +54,50 @@ public class CarApi {
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //TODO modyfikowanie, modyfikowanie jednego z pól, usuwanie
+    @PutMapping
+    public ResponseEntity updateCar(@RequestBody Car car) {
+        boolean isAdded = service.updateCar(car);
 
+        if(isAdded)
+            return new ResponseEntity(HttpStatus.OK);
 
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PatchMapping
+    public ResponseEntity updateCarField(@RequestBody Car newCar) {
+        List<Car> cars = service.getCars();
+        Optional<Car> carOptional = cars.stream().filter(oldCar -> oldCar.getId() == newCar.getId()).findFirst();
+
+        if(carOptional.isPresent()) {
+            Car updatedCar = carOptional.get();
+
+            if(updatedCar.getMark() != null && !updatedCar.getMark().isEmpty()) {
+                service.updateCar(new Car(updatedCar.getId(), newCar.getMark(), updatedCar.getModel(), updatedCar.getColor()));
+                return new ResponseEntity(HttpStatus.OK);
+            }
+
+            if(updatedCar.getModel() != null && !updatedCar.getModel().isEmpty()) {
+                service.updateCar(new Car(updatedCar.getId(), updatedCar.getMark(), newCar.getModel(), updatedCar.getColor()));
+                return new ResponseEntity(HttpStatus.OK);
+            }
+
+            if(updatedCar.getColor() != null && !updatedCar.getColor().isEmpty()) {
+                service.updateCar(new Car(updatedCar.getId(), updatedCar.getMark(), updatedCar.getModel(), newCar.getColor()));
+                return new ResponseEntity(HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteCar(@PathVariable long id) {
+        boolean isRemoved = service.removeCarById(id);
+
+        if(isRemoved)
+            return new ResponseEntity(HttpStatus.OK);
+
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

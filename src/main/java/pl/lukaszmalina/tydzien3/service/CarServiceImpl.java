@@ -40,8 +40,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public boolean editCar(Car car) {
-        return repository.editCar(car);
+    public boolean updateCar(Car car) {
+        return repository.updateCar(car);
     }
 
     @Override

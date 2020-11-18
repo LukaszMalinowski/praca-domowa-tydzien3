@@ -15,7 +15,7 @@ public interface CarService {
 
     boolean addCar(Car car);
 
-    boolean editCar(Car car);
+    boolean updateCar(Car car);
 
     boolean removeCarById(long id);
 }
