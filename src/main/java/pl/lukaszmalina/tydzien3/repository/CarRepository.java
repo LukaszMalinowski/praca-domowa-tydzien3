@@ -1,7 +1,6 @@
 package pl.lukaszmalina.tydzien3.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 import pl.lukaszmalina.tydzien3.entity.Car;
 
 import java.util.ArrayList;
@@ -31,6 +30,11 @@ public class CarRepository {
     }
 
     public boolean addCar(Car car) {
+        Optional<Car> carOptional = carList.stream().filter(oldCar -> oldCar.getId() == car.getId()).findFirst();
+
+        if(carOptional.isPresent())
+            return false;
+
         return carList.add(car);
     }
 

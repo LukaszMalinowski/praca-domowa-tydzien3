@@ -59,7 +59,7 @@ public class CarApi {
     }
 
     @PutMapping
-    public ResponseEntity updateCar(@RequestBody Car car) {
+    public ResponseEntity updateCar(@Validated @RequestBody Car car) {
         boolean isAdded = service.updateCar(car);
 
         if(isAdded)
@@ -76,17 +76,17 @@ public class CarApi {
         if(carOptional.isPresent()) {
             Car updatedCar = carOptional.get();
 
-            if(updatedCar.getMark() != null && !updatedCar.getMark().isEmpty()) {
+            if(newCar.getMark() != null && !newCar.getMark().isEmpty()) {
                 service.updateCar(new Car(updatedCar.getId(), newCar.getMark(), updatedCar.getModel(), updatedCar.getColor()));
                 return new ResponseEntity(HttpStatus.OK);
             }
 
-            if(updatedCar.getModel() != null && !updatedCar.getModel().isEmpty()) {
+            if(newCar.getModel() != null && !newCar.getModel().isEmpty()) {
                 service.updateCar(new Car(updatedCar.getId(), updatedCar.getMark(), newCar.getModel(), updatedCar.getColor()));
                 return new ResponseEntity(HttpStatus.OK);
             }
 
-            if(updatedCar.getColor() != null && !updatedCar.getColor().isEmpty()) {
+            if(newCar.getColor() != null && !newCar.getColor().isEmpty()) {
                 service.updateCar(new Car(updatedCar.getId(), updatedCar.getMark(), updatedCar.getModel(), newCar.getColor()));
                 return new ResponseEntity(HttpStatus.OK);
             }
@@ -97,7 +97,6 @@ public class CarApi {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCar(@PathVariable long id) {
-        System.out.println("here");
         boolean isRemoved = service.removeCarById(id);
 
         if(isRemoved)
@@ -110,6 +109,6 @@ public class CarApi {
     public void addThreeCars() {
         addCar(new Car(1L, "Ford", "Mustang", "Red"));
         addCar(new Car(2L, "Audi", "A5", "Black"));
-        addCar(new Car(3L, "BMW", "X5", "White"));
+        addCar(new Car(3L, "BMW", "X3", "White"));
     }
 }
