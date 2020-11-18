@@ -32,6 +32,7 @@ public class CarApi {
 
     @GetMapping("/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable long id) {
+        System.out.println(id);
         Optional<Car> car = service.getCarById(id);
 
         if(car.isPresent())
@@ -40,8 +41,9 @@ public class CarApi {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/{color}")
+    @GetMapping("/color/{color}")
     public ResponseEntity<List<Car>> getCarsByColor(@PathVariable String color) {
+        System.out.println(color);
         List<Car> cars = service.getCarsByColor(color);
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
@@ -93,8 +95,9 @@ public class CarApi {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteCar(@PathVariable long id) {
+        System.out.println("here");
         boolean isRemoved = service.removeCarById(id);
 
         if(isRemoved)

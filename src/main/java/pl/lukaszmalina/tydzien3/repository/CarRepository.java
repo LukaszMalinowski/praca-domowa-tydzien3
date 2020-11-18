@@ -1,6 +1,7 @@
 package pl.lukaszmalina.tydzien3.repository;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 import pl.lukaszmalina.tydzien3.entity.Car;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class CarRepository {
     }
 
     public List<Car> getCarsByColor(String color) {
-        return carList.stream().filter(car -> car.getColor().equals(color)).collect(Collectors.toList());
+        return carList.stream().filter(car -> car.getColor().toLowerCase().equals(color.toLowerCase())).collect(Collectors.toList());
     }
 
     public boolean addCar(Car car) {
