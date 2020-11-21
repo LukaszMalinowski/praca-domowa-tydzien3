@@ -1,8 +1,10 @@
 package pl.lukaszmalina.tydzien3.entity;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.validation.constraints.NotNull;
 
-public class Car {
+public class Car extends RepresentationModel<Car> {
 
     @NotNull
     private long id;

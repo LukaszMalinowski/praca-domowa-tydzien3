@@ -3,6 +3,7 @@ package pl.lukaszmalina.tydzien3.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import pl.lukaszmalina.tydzien3.service.CarService;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(value = "/cars",
@@ -27,25 +30,35 @@ public class CarApi {
     }
 
     @GetMapping
-    public ResponseEntity<List<Car>> getCars() {
+    public ResponseEntity<CollectionModel<Car>> getCars() {
         List<Car> cars = service.getCars();
-        return new ResponseEntity<>(cars, HttpStatus.OK);
+
+        cars.forEach(this::addSelfLink);
+
+        return new ResponseEntity<>(CollectionModel.of(cars, linkTo(CarApi.class).withSelfRel()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable long id) {
-        Optional<Car> car = service.getCarById(id);
+        Optional<Car> carOptional = service.getCarById(id);
 
-        if(car.isPresent())
-            return new ResponseEntity<>(car.get(), HttpStatus.OK);
+
+        if(carOptional.isPresent()) {
+            Car car = carOptional.get();
+            car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class).slash(id).withSelfRel());
+            return new ResponseEntity<>(car, HttpStatus.OK);
+        }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/color/{color}")
-    public ResponseEntity<List<Car>> getCarsByColor(@PathVariable String color) {
+    public ResponseEntity<CollectionModel<Car>> getCarsByColor(@PathVariable String color) {
         List<Car> cars = service.getCarsByColor(color);
-        return new ResponseEntity<>(cars, HttpStatus.OK);
+
+        cars.forEach(this::addSelfLink);
+
+        return new ResponseEntity<>(CollectionModel.of(cars, linkTo(CarApi.class).withSelfRel()), HttpStatus.OK);
     }
 
     @PostMapping
@@ -103,6 +116,10 @@ public class CarApi {
             return new ResponseEntity(HttpStatus.OK);
 
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    void addSelfLink(Car car) {
+        car.addIf(!car.hasLinks(), () -> linkTo(CarApi.class).slash(car.getId()).withSelfRel());
     }
 
     @EventListener(ApplicationReadyEvent.class)
